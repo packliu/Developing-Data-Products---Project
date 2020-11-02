@@ -1,0 +1,53 @@
+---
+title: "Shiny Application - Prediction Model for Motor Trend Car Road Tests"
+author: "DomoM"
+date: "10/30/2020"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Introduction
+
+Write a shiny application with associated dataset from Motor Trend Car Road Tests ("mtcars"). The interactive webpage provides a simple operation to predict the horsepower w.r.t. mpg (tab 1) and mpg w.r.t. cars' weight (tab 2) using linear regression modeling. 
+
+## Dataset for Motor Trend Car Road Tests
+
+```{r, echo=FALSE, fig.align='center', message=FALSE, warning=FALSE}
+str(mtcars)
+```
+
+## How to Use the Interactive Box
+
+### Tab 1: input a number within the given range in the box1 for a mpg value to predict the horsepower.
+
+### Tab 2: input a number within the given range in the box2 for a weight value to predict the mpg.
+
+## Plots Demo
+
+```{r, echo=FALSE, fig.align='center', message=FALSE, warning=FALSE}
+    #build the model to predict horsepower from pmg
+    model1<-lm(hp~mpg, data=mtcars)
+    mpgInput1<-20
+    model1pred <- predict(model1,newdata=data.frame(mpg=as.numeric(mpgInput1)))
+    
+    #build the model to predict mph from wt
+    model2<-lm(mpg~wt, data=mtcars)
+    mpgInput2<-3
+    model2pred<-predict(model2, newdata=data.frame(wt=as.numeric(mpgInput2)))
+    
+    par(mfrow=c(1,2))
+    plot(mtcars$mpg, mtcars$hp, xlab="miles per gallon", ylab="horsepower", 
+         main="Tab 1", pch=16)
+    abline(model1, col="red",lwd=1)
+    legend("topright", pch=3, legend=c("model prediction"), col=c("red"))
+    points(mpgInput1, model1pred, col = "red", pch=16, cex=2)
+       
+    plot(mtcars$wt, mtcars$mpg, xlab="weight (/1000 lbs)", 
+                ylab="miles per gallon", main="Tab 2", pch=16)
+    abline(model2, col="blue",lwd=1)
+    legend("topright", pch=1, legend=c("model prediction"), col=c("blue"))
+    points(mpgInput2, model2pred, col = "blue", pch=16, cex=2)
+```
